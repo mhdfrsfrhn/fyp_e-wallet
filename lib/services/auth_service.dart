@@ -1,7 +1,28 @@
 import 'package:fyp3/imports.dart';
 
+class Authentication {
+  static Future<bool> authenticateWithBiometrics() async {
+    final LocalAuthentication localAuthentication = LocalAuthentication();
+    bool isBiometricSupported = await localAuthentication.isDeviceSupported();
+    bool canCheckBiometrics = await localAuthentication.canCheckBiometrics;
+
+    bool isAuthenticated = false;
+
+    if (isBiometricSupported && canCheckBiometrics) {
+      isAuthenticated = await localAuthentication.authenticate(
+        localizedReason: 'Please complete the biometrics to proceed.',
+        biometricOnly: true,
+      );
+    }
+
+    return isAuthenticated;
+  }
+}
+
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -37,9 +58,29 @@ class AuthService {
       email: email,
       password: password,
     );
+
+    ///Create users field
     FirebaseFirestore.instance.collection('users')
         .doc(authResult.user!.uid)
         .set({'money': 0, 'email': email, 'name': name, 'userID': authResult.user!.uid});
+
+    ///Create device token field
+    String? fcmToken = await _fcm.getToken();
+    // Save it to Firestore
+    if (fcmToken != null) {
+      var tokens = _db
+          .collection('users')
+          .doc(authResult.user!.uid)
+          .collection('tokens')
+          .doc(fcmToken);
+
+      await tokens.set({
+        'token': fcmToken,
+        'createdAt': FieldValue.serverTimestamp(), // optional
+        'platform': Platform.operatingSystem // optional
+      });
+    }
+
     // Update the username
     await updateUserName(name, authResult.user!);
     return authResult.user!.uid;

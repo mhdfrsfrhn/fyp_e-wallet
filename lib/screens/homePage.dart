@@ -39,13 +39,21 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: Drawer(),
       appBar: AppBar(
-        title:   RichText(
+        title: RichText(
           text: TextSpan(
             style: TextStyle(color: Colors.black),
             children: <TextSpan>[
-              TextSpan(text: 'Zwallet | ', style: GoogleFonts.quicksand(fontSize: 20.0)),
-              TextSpan(text: 'by farrriso ', style: GoogleFonts.quicksand(fontSize: 14.0, color: Colors.grey)),
-              TextSpan(text: '& ahmaddnazrii', style: GoogleFonts.quicksand(fontSize: 14.0, color: Colors.grey))
+              TextSpan(
+                  text: 'Zwallet | ',
+                  style: GoogleFonts.quicksand(fontSize: 20.0)),
+              TextSpan(
+                  text: 'by farrriso ',
+                  style: GoogleFonts.quicksand(
+                      fontSize: 14.0, color: Colors.grey)),
+              TextSpan(
+                  text: '& ahmaddnazrii',
+                  style:
+                      GoogleFonts.quicksand(fontSize: 14.0, color: Colors.grey))
             ],
           ),
         ),
@@ -190,15 +198,29 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _operationsWidget() {
+    // final LocalAuthentication localAuthentication = LocalAuthentication();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         _icon(
           icon: Icons.transfer_within_a_station,
           text: "Transfer",
-          onTap: () {
-            Navigator.pushNamed(context, '/qr_scan');
+          onTap: () async {
+            bool isAuthenticated =
+                await Authentication.authenticateWithBiometrics();
+
+            if (isAuthenticated) {
+              Navigator.pushNamed(context, '/qr_scan');
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Error authenticating using Biometrics.'))
+                  // Authentication.SnackBar(
+                  //   content: 'Error authenticating using Biometrics.',
+                  // ),
+                  );
+            }
           },
+          // Navigator.pushNamed(context, '/qr_scan');
         ),
         // _icon(Icons.phone, "Airtime"),
         _icon(

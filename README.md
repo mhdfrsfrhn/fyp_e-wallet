@@ -1,5 +1,8 @@
 # fyp3
 
+build apk command: flutter build apk --obfuscate --split-debug-info=./fyp3/debug
+
+
 A new Flutter project.
 
 ## Getting Started

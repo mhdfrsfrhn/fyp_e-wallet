@@ -53,6 +53,7 @@ dependencies:
   flutter_qr_bar_scanner: ^3.0.2
   qr_flutter: ^4.0.0
   qr_code_scanner: ^0.6.1
+  firebase_messaging: ^11.2.6
 
 
 dev_dependencies:
@@ -62,7 +63,6 @@ dev_dependencies:
 flutter_native_splash:
   color: "ffffff"
   image: assets/upm_logo.png
-  android_gravity: fill
   android: true
   ios: true
 
