@@ -1,4 +1,4 @@
-# fyp3
+# E-Wallet
 
 A new Flutter project.
 
