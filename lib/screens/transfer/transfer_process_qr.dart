@@ -1,14 +1,10 @@
+import 'package:fyp3/services/credential.dart';
 import 'package:fyp3/imports.dart';
-import 'package:fyp3/screens/transfer/qr_scan.dart';
 import 'package:fyp3/screens/transfer/receipt_qr.dart';
 import 'package:fyp3/services/fingerauth.dart';
 import 'package:fyp3/utils/utils.dart';
 import 'package:fyp3/widgets/widgets.dart';
-import 'dart:math' as math;
-
-
 import 'package:local_auth/auth_strings.dart';
-import 'package:local_auth/local_auth.dart';
 
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
@@ -149,6 +145,7 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
                       }
                     });
                     if (validatedAmount) {
+
                       // if (await _startFingerAuth() != "Failed") {
                         WriteBatch batch = db.batch();
                         var transferAccount =
@@ -163,6 +160,9 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
                           "money": FieldValue.increment(
                               double.parse(_amount.text.toString()) * -1) // 30 * -1
                         });
+                        ///sending email
+                        sendEmail(context, _amount.text, widget.value.email);
+
                         CollectionReference transactionHistoryRef =
                         FirebaseFirestore.instance
                             .collection('transactionHistory');
@@ -225,6 +225,7 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
       ),
     );
   }
+
 
   ///Enter amount
   Widget wEnterAmount(BuildContext context) {
@@ -311,7 +312,7 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
   Future<String?> _startFingerAuth() async {
     bool _isAuthenticated = false;
     AndroidAuthMessages _androidMsg = AndroidAuthMessages(
-      // signInTitle: 'Biometric authentication',
+      signInTitle: 'Biometric authentication',
       biometricHint: '',
       cancelButton: 'Close',
     );

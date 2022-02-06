@@ -19,31 +19,31 @@ class FirstView extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: <Widget>[
-                SizedBox(height: _height * 0.02),
-                Text(
-                  "UPM E-wallet",
-                  style: TextStyle(fontSize: 22, color: Colors.black87),
-                ),
                 SizedBox(height: _height * 0.05),
-                // AutoSizeText(
-                //   "Let’s start planning your next class",
-                //   maxLines: 3,
-                //   textAlign: TextAlign.center,
-                //   style: TextStyle(
-                //     fontSize: 40,
-                //     color: Colors.black87,
-                //   ),
-                // ),
+                Text(
+                  "UPM E-Wallet",
+                  style: TextStyle(fontSize: 30, color: LightColor.lightblack),
+                ),
+                SizedBox(height: _height * 0.01),
+                AutoSizeText(
+                  "Berilmu Berbakti\nWith Knowledge We Serve",
+                  maxLines: 3,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                ),
                 Container(
                   child: Image.asset(
-                    'assets/upm_logo.png',
-                    height: _height * 0.46,
+                    'assets/e-walletHome.png',
+                    height: _height * 0.4,
                     fit: BoxFit.cover,
                   ),
                 ),
                 SizedBox(height: _height * 0.05),
                 RaisedButton(
-                  // color: Palette.kToDark,
+                  color: LightColor.yellow,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
                   child: Padding(
@@ -52,7 +52,7 @@ class FirstView extends StatelessWidget {
                     child: Text(
                       "Get Started",
                       style: TextStyle(
-                        color: primaryColor,
+                        color: LightColor.black,
                         fontSize: 28,
                         fontWeight: FontWeight.w300,
                       ),
@@ -73,7 +73,7 @@ class FirstView extends StatelessWidget {
                     );
                   },
                 ),
-                SizedBox(height: _height * 0.05),
+                SizedBox(height: _height * 0.02),
                 FlatButton(
                   child: Text(
                     "Sign In",

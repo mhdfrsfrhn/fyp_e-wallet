@@ -1,7 +1,6 @@
 import 'package:fyp3/imports.dart';
 
 class CustomDialog extends StatelessWidget {
-  // final primaryColor = Palette.kToDark;
   final grayColor = const Color(0xFF939393);
 
   final String title,

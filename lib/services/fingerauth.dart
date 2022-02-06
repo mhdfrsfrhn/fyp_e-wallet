@@ -26,17 +26,12 @@ class _FingerAuthState extends State<FingerAuth> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Flutter Biometric Testing'),
-      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             IconButton(
               icon: Icon(
-                // Icons.fingerprint_rounded,
-                // size: 50,
                 Icons.lock_rounded,
                 size: 50,
               ),
@@ -82,9 +77,7 @@ class _FingerAuthState extends State<FingerAuth> {
   void _startFingerAuth () async {
     bool _isAuthenticated = false;
     AndroidAuthMessages _androidMsg = AndroidAuthMessages(
-      // signInTitle: 'Biometric authentication',
       biometricHint: '',
-      // cancelButton: 'Close',
     );
     try{
         _isAuthenticated = await _fingerauth.authenticate(

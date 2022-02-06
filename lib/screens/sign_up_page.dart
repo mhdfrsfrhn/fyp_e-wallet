@@ -1,8 +1,9 @@
 import 'package:fyp3/imports.dart';
+import 'package:fyp3/theme/background.dart';
 
 final primaryColor = const Color(0xFFF0F0F0);
 
-enum AuthFormType { signIn, signUp, reset, anonymous, convert}
+enum AuthFormType { signIn, signUp, reset}
 
 class SignUpView extends StatefulWidget {
   final AuthFormType authFormType;
@@ -16,21 +17,11 @@ class SignUpView extends StatefulWidget {
 
 class _SignUpViewState extends State<SignUpView> {
   AuthFormType authFormType;
-  // bool _showAppleSignIn = false;
 
   @override
   void initState() {
     super.initState();
-
-    // _useAppleSignIn();
   }
-
-  // _useAppleSignIn() async {
-  //   final isAvailable = await AppleSignIn.isAvailable();
-  //   setState(() {
-  //     _showAppleSignIn = isAvailable;
-  //   });
-  // }
 
   _SignUpViewState({required this.authFormType});
 
@@ -54,9 +45,6 @@ class _SignUpViewState extends State<SignUpView> {
 
   bool validate() {
     final form = formKey.currentState;
-    if (authFormType == AuthFormType.anonymous) {
-      return true;
-    }
     form!.save();
     if (form.validate()) {
       form.save();
@@ -86,22 +74,6 @@ class _SignUpViewState extends State<SignUpView> {
               authFormType = AuthFormType.signIn;
             });
             break;
-          case AuthFormType.anonymous:
-            await auth.singInAnonymously();
-            Navigator.of(context).pushReplacementNamed('/home');
-            break;
-          case AuthFormType.convert:
-            await auth.convertUserWithEmail(_email!, _password!, _name!);
-            Navigator.of(context).pop();
-            break;
-          // case AuthFormType.phone:
-          //   var result = await auth.createUserWithPhone(_phone, context);
-          //   if (_phone == "" || result == "error") {
-          //     setState(() {
-          //       _warning = "Your phone number could not be validated";
-          //     });
-          //   }
-          //   break;
         }
       } catch (e) {
         setState(() {
@@ -115,56 +87,36 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-
-    if (authFormType == AuthFormType.anonymous) {
-      submit();
-      return Scaffold(
-          backgroundColor: primaryColor,
-          body: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircularProgressIndicator(
-                  color: Colors.black87,
-                ),
-                Text(
-                  "Loading",
-                  style: TextStyle(color: Colors.black87),
-                ),
-              ],
-            ),
-          ));
-    } else {
       return Scaffold(
         body: SingleChildScrollView(
-          child: Container(
-            color: primaryColor,
-            height: _height,
-            width: _width,
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: _height * 0.025),
-                  showAlert(),
-                  SizedBox(height: _height * 0.025),
-                  buildHeaderText(),
-                  SizedBox(height: _height * 0.05),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        children: buildInputs() + buildButtons(),
+            child: Container(
+              color: primaryColor,
+              height: _height,
+              width: _width,
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: _height * 0.025),
+                    showAlert(),
+                    SizedBox(height: _height * 0.025),
+                    buildHeaderText(),
+                    SizedBox(height: _height * 0.05),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: buildInputs() + buildButtons(),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
+
       );
-    }
   }
 
   Widget showAlert() {
@@ -212,9 +164,6 @@ class _SignUpViewState extends State<SignUpView> {
     } else if (authFormType == AuthFormType.reset) {
       _headerText = "Reset Password";
     }
-    // else if (authFormType == AuthFormType.phone) {
-    //   _headerText = "Phone Sign In";
-    // }
     else {
       _headerText = "Create New Account";
     }
@@ -229,18 +178,11 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 
-  // void onPhoneNumberChange(
-  //     String number, String internationalizedPhoneNumber, String isoCode) {
-  //   setState(() {
-  //     _phone = internationalizedPhoneNumber;
-  //   });
-  // }
-
   List<Widget> buildInputs() {
     List<Widget> textFields = [];
 
     // if were in the sign up state add name
-    if ([AuthFormType.signUp, AuthFormType.convert].contains(authFormType)) {
+    if ([AuthFormType.signUp].contains(authFormType)) {
       textFields.add(
         TextFormField(
           validator: NameValidator.validate,
@@ -255,7 +197,6 @@ class _SignUpViewState extends State<SignUpView> {
     // add email & password
     if ([
       AuthFormType.signUp,
-      AuthFormType.convert,
       AuthFormType.reset,
       AuthFormType.signIn
     ].contains(authFormType)) {
@@ -284,21 +225,9 @@ class _SignUpViewState extends State<SignUpView> {
       );
       textFields.add(SizedBox(height: 20));
     }
-
-    // if (authFormType == AuthFormType.phone) {
-    //   textFields.add(
-    //     InternationalPhoneInput(
-    //         decoration: buildSignUpInputDecoration("Enter Phone Number"),
-    //         onPhoneNumberChange: onPhoneNumberChange,
-    //         initialPhoneNumber: _phone,
-    //         initialSelection: 'US',
-    //         showCountryCodes: true),
-    //   );
-    //   textFields.add(SizedBox(height: 20));
-    // }
-
     return textFields;
   }
+  ///buildInputs end
 
   InputDecoration buildSignUpInputDecoration(String hint) {
     return InputDecoration(
@@ -330,10 +259,6 @@ class _SignUpViewState extends State<SignUpView> {
       _newFormState = "signIn";
       _submitButtonText = "Submit";
       _showSocial = false;
-    } else if (authFormType == AuthFormType.convert) {
-      _switchButtonText = "Cancel";
-      _newFormState = "home";
-      _submitButtonText = "Sign Up";
     }
     // else if (authFormType == AuthFormType.phone) {
     //   _switchButtonText = "Cancel";
@@ -397,21 +322,6 @@ class _SignUpViewState extends State<SignUpView> {
       visible: visible,
     );
   }
-  Widget showSignInAnon(bool visible) {
-    return Visibility(
-      child: FlatButton(
-        child: Text(
-          "Sign In Anon",
-          style: TextStyle(color: Colors.black87),
-        ),
-        onPressed: () {
-          AuthProvider.of(context)!.auth.singInAnonymously();
-          Navigator.of(context).pushReplacementNamed('/home');
-        },
-      ),
-      visible: visible,
-    );
-  }
 
   Widget buildSocialIcons(bool visible) {
     final _auth = AuthProvider.of(context)!.auth;
@@ -422,64 +332,10 @@ class _SignUpViewState extends State<SignUpView> {
           Divider(
             color: Colors.black87,
           ),
-          // SizedBox(height: 10),
-          // buildAppleSignIn(_auth),
           SizedBox(height: 10),
-          // SignInButton(
-          //   Buttons.Google,
-          //   onPressed: () async {
-          //     try {
-          //       if (authFormType == AuthFormType.convert) {
-          //         await _auth.convertWithGoogle();
-          //         Navigator.of(context).pop();
-          //       } else {
-          //         await _auth.signInWithGoogle();
-          //         Navigator.of(context).pushReplacementNamed('/home');
-          //       }
-          //     } catch (e) {
-          //       setState(() {
-          //         _warning = e.toString();
-          //       });
-          //     }
-          //   },
-          // ),
-          // RaisedButton(
-          //   color: Colors.green,
-          //   textColor: Colors.white,
-          //   child: Row(
-          //     children: <Widget>[
-          //       Icon(Icons.phone),
-          //       Padding(
-          //         padding: const EdgeInsets.only(
-          //             left: 14.0, top: 10.0, bottom: 10.0),
-          //         child: Text("Sign in with Phone",
-          //             style: TextStyle(fontSize: 18)),
-          //       )
-          //     ],
-          //   ),
-          //   onPressed: () {
-          //     setState(() {
-          //       authFormType = AuthFormType.phone;
-          //     });
-          //   },
-          // ),
         ],
       ),
       visible: visible,
     );
   }
-
-  // Widget buildAppleSignIn(_auth) {
-  //   if (authFormType != AuthFormType.convert && _showAppleSignIn == true) {
-  //     return AppleSignInButton(
-  //       onPressed: () async {
-  //         await _auth.signInWithApple();
-  //         Navigator.of(context).pushReplacementNamed('/home');
-  //       },
-  //       style: ButtonStyle.black,
-  //     );
-  //   } else {
-  //     return Container();
-  //   }
-  // }
 }

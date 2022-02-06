@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "565797896372",
+    "project_id": "walletapp-dadc6",
+    "storage_bucket": "walletapp-dadc6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565797896372:android:938ae30bec2e0725f717e1",
+        "android_client_info": {
+          "package_name": "com.fyp3.ewallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "565797896372-if9dlclugciou2fgmjtkhm26koumett2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpKbD1HsLPVMZBxQHD2QoU1mo9okcHYjk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "565797896372-if9dlclugciou2fgmjtkhm26koumett2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,5 @@
 import 'package:fyp3/imports.dart';
+import 'package:fyp3/screens/txhistory_builditem.dart';
 
 // import 'package:fyp2/src/widgets/bottom_navigation_bar.dart';
 
@@ -37,30 +38,29 @@ class _HomePageState extends State<HomePage> {
   Widget homeView(context, snapshot) {
     final authData = snapshot.data;
     return Scaffold(
-      drawer: Drawer(),
-      appBar: AppBar(
-        title: RichText(
-          text: TextSpan(
-            style: TextStyle(color: Colors.black),
-            children: <TextSpan>[
-              TextSpan(
-                  text: 'Zwallet | ',
-                  style: GoogleFonts.quicksand(fontSize: 20.0)),
-              TextSpan(
-                  text: 'by farrriso ',
-                  style: GoogleFonts.quicksand(
-                      fontSize: 14.0, color: Colors.grey)),
-              TextSpan(
-                  text: '& ahmaddnazrii',
-                  style:
-                      GoogleFonts.quicksand(fontSize: 14.0, color: Colors.grey))
-            ],
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        foregroundColor: Colors.black,
-      ),
+      // appBar: AppBar(
+      //   title: RichText(
+      //     text: TextSpan(
+      //       style: TextStyle(color: Colors.black),
+      //       children: <TextSpan>[
+      //         TextSpan(
+      //             text: 'Zwallet | ',
+      //             style: GoogleFonts.quicksand(fontSize: 20.0)),
+      //         TextSpan(
+      //             text: 'by farrriso ',
+      //             style: GoogleFonts.quicksand(
+      //                 fontSize: 14.0, color: Colors.grey)),
+      //         TextSpan(
+      //             text: '& ahmaddnazrii',
+      //             style:
+      //                 GoogleFonts.quicksand(fontSize: 14.0, color: Colors.grey))
+      //       ],
+      //     ),
+      //   ),
+      //   backgroundColor: Colors.transparent,
+      //   shadowColor: Colors.transparent,
+      //   foregroundColor: Colors.black,
+      // ),
       // bottomNavigationBar: BottomNavigation(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -142,7 +142,16 @@ class _HomePageState extends State<HomePage> {
                         }),
                   ],
                 ),
-                _transectionList(),
+                Container(
+                  constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.3,
+                      maxWidth: MediaQuery.of(context).size.width,
+                  ),
+                  height: MediaQuery.of(context).size.height * 0,
+                  // width: MediaQuery.of(context).size.width,
+                  child: SendHistory_BuildItem(),
+                ),
+                // _transectionList(),
                 const SizedBox(
                   height: 20,
                 ),
@@ -198,7 +207,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _operationsWidget() {
-    // final LocalAuthentication localAuthentication = LocalAuthentication();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
@@ -303,7 +311,7 @@ class _HomePageState extends State<HomePage> {
           color: LightColor.navyBlue1,
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        child: const Icon(Icons.hd, color: Colors.white),
+        child: const Icon(Icons.account_balance_wallet_outlined, color: Colors.white),
       ),
       contentPadding: const EdgeInsets.symmetric(),
       title: TitleText(

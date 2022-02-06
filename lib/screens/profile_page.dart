@@ -58,13 +58,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: SizedBox(),
                     ),
                     Container(
-                      width: 100.0,
-                      height: 100.0,
-                      decoration: new BoxDecoration(
+                      width: 150.0,
+                      height: 250.0,
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        image: new DecorationImage(
+                        image: DecorationImage(
                             fit: BoxFit.fill,
-                            image: new NetworkImage(
+                            image: NetworkImage(
                                 "https://picsum.photos/200/300.jpg")),
                       ),
                     ),

@@ -61,29 +61,6 @@ class _SendHistoryState extends State<SendHistory> {
               snapshot.hasData ? snapshot.data!.docs.length : 0,
               itemBuilder: (context, index) {
                 if (snapshot.data!.docs[index]
-                    .get('RecipientEmail')
-                    .toString() ==
-                    user.email) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(
-                          'From: ${snapshot.data!.docs[index].get('SenderEmail').toString()}'),
-                      subtitle: Text(
-                          'Details: ${snapshot.data!.docs[index].get('RecipientReference').toString()}\nDate Time: ${snapshot.data!.docs[index].get('DTime').toString()}'),
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.green,
-                        ),
-                      ),
-                      trailing: Text(
-                        'RM ${snapshot.data!.docs[index].get('AmountReceived').toString()}',
-                        style: TextStyle(color: Colors.green),
-                      ),
-                    ),
-                  );
-                } else if (snapshot.data!.docs[index]
                     .get('SenderEmail')
                     .toString() ==
                     user.email) {

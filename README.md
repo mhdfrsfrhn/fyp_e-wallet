@@ -1,6 +1,7 @@
 # fyp3
 
 build apk command: flutter build apk --obfuscate --split-debug-info=./fyp3/debug
+flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --obfuscate --split-debug-info=./fyp3/debug
 
 
 A new Flutter project.
