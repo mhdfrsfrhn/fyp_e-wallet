@@ -235,6 +235,7 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
       child: TextFormField(
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [
+
           // Allow Decimal Number With Precision of 2 Only
           FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
         ],

@@ -19,12 +19,12 @@ class FirstView extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: <Widget>[
-                SizedBox(height: _height * 0.05),
-                Text(
-                  "UPM E-Wallet",
-                  style: TextStyle(fontSize: 30, color: LightColor.lightblack),
-                ),
-                SizedBox(height: _height * 0.01),
+                Spacer(flex:2),
+                /// SizedBox(height: _height * 0.0),
+                // Text(
+                //   "UPM E-Wallet",
+                //   style: TextStyle(fontSize: 30, color: LightColor.lightblack),
+                // ),
                 AutoSizeText(
                   "Berilmu Berbakti\nWith Knowledge We Serve",
                   maxLines: 3,
@@ -34,6 +34,8 @@ class FirstView extends StatelessWidget {
                     color: Colors.black87,
                   ),
                 ),
+                ///SizedBox(height: _height * 0.2),
+                Spacer(),
                 Container(
                   child: Image.asset(
                     'assets/e-walletHome.png',
@@ -41,7 +43,8 @@ class FirstView extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(height: _height * 0.05),
+                ///SizedBox(height: _height * 0.2),
+                Spacer(),
                 RaisedButton(
                   color: LightColor.yellow,
                   shape: RoundedRectangleBorder(
@@ -82,7 +85,8 @@ class FirstView extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pushReplacementNamed('/signIn');
                   },
-                )
+                ),
+                Spacer(flex: 2),
               ],
             ),
           ),

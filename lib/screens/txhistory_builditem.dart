@@ -11,7 +11,9 @@ class _SendHistory_BuildItemState extends State<SendHistory_BuildItem> {
   static get user => FirebaseAuth.instance.currentUser!;
   final Query _sendHistory = FirebaseFirestore.instance
       .collection('transactionHistory')
-      .where('SenderEmail', isEqualTo: user.email);
+      .orderBy('TimeDate', descending: true)
+      .where('SenderEmail', isEqualTo: user.email)
+      .limit(5);
 
   // .orderBy('DTime', descending: true);
   final auth = FirebaseAuth.instance;
@@ -19,12 +21,12 @@ class _SendHistory_BuildItemState extends State<SendHistory_BuildItem> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _sendHistory.snapshots(),
-      // .where('RecipientEmail', isEqualTo: user.email)
-      // .where(user.email.toString(), arrayContainsAny: ['SenderEmail', 'RecipientEmail'])
-      // .where(user.email.toString(), whereIn: ["SenderEmail","RecipientEmail"])
-      // .orderBy('DTime', descending: true)
-      //     .snapshots(),
+      stream: _sendHistory
+          // .where('RecipientEmail', isEqualTo: user.email)
+          // .where(user.email.toString(), arrayContainsAny: ['SenderEmail', 'RecipientEmail'])
+          // .where(user.email.toString(), whereIn: ["SenderEmail","RecipientEmail"])
+          // .orderBy('DTime')
+          .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -40,17 +42,28 @@ class _SendHistory_BuildItemState extends State<SendHistory_BuildItem> {
               ),
             ),
           );
-        }
-        else {
+        } else if (snapshot.data!.docs.length < 1) {
+          return Center(
+            // alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 140),
+              child: Text(
+                'No Recent\nPayment Made',
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        } else {
           return Container(
             // padding: EdgeInsets.all(8),
             child: ListView.builder(
-              itemCount:
-              snapshot.hasData ? snapshot.data!.docs.length : 0,
+              itemCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
               itemBuilder: (context, index) {
-                if (snapshot.data!.docs[index]
-                    .get('SenderEmail')
-                    .toString() ==
+                if (snapshot.data!.docs[index].get('SenderEmail').toString() ==
                     user.email) {
                   return ListTile(
                     leading: Container(
@@ -60,14 +73,17 @@ class _SendHistory_BuildItemState extends State<SendHistory_BuildItem> {
                         color: LightColor.navyBlue1,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
-                      child: const Icon(Icons.account_balance_wallet_outlined, color: Colors.white),
+                      child: const Icon(Icons.account_balance_wallet_outlined,
+                          color: Colors.white),
                     ),
                     contentPadding: const EdgeInsets.symmetric(),
                     title: TitleText(
-                      text: 'To: ${snapshot.data!.docs[index].get('RecipientEmail').toString()}',
+                      text:
+                          'To: ${snapshot.data!.docs[index].get('RecipientEmail').toString()}',
                       fontSize: 14,
                     ),
-                    subtitle: Text('${snapshot.data!.docs[index].get('DTime').toString()}'),
+                    subtitle: Text(
+                        '${snapshot.data!.docs[index].get('DTime').toString()}'),
                     trailing: Container(
                         height: 30,
                         width: 60,
@@ -76,31 +92,13 @@ class _SendHistory_BuildItemState extends State<SendHistory_BuildItem> {
                           color: LightColor.lightGrey,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
-                        child: Text('-RM ${snapshot.data!.docs[index].get('AmountReceived').toString()}',
+                        child: Text(
+                            '-RM ${snapshot.data!.docs[index].get('AmountReceived').toString()}',
                             style: GoogleFonts.mulish(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: LightColor.navyBlue2))),
                   );
-                  // return Card(
-                  //   child: ListTile(
-                  //     title: Text(
-                  //         'To: ${snapshot.data!.docs[index].get('RecipientEmail').toString()}'),
-                  //     subtitle: Text(
-                  //         'Details: ${snapshot.data!.docs[index].get('RecipientReference').toString()}\nDate Time: ${snapshot.data!.docs[index].get('DTime').toString()}'),
-                  //     leading: CircleAvatar(
-                  //       backgroundColor: Colors.white,
-                  //       child: Icon(
-                  //         Icons.remove,
-                  //         color: Colors.red,
-                  //       ),
-                  //     ),
-                  //     trailing: Text(
-                  //       'RM ${snapshot.data!.docs[index].get('AmountReceived').toString()}',
-                  //       style: TextStyle(color: Colors.red),
-                  //     ),
-                  //   ),
-                  // );
                 } else {
                   return Text('');
                 }

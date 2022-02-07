@@ -1,9 +1,9 @@
 import 'package:fyp3/imports.dart';
 import 'package:fyp3/theme/background.dart';
 
-final primaryColor = const Color(0xFFF0F0F0);
+// final primaryColor = const Color(0xFFF0F0F0);
 
-enum AuthFormType { signIn, signUp, reset}
+enum AuthFormType { signIn, signUp, reset }
 
 class SignUpView extends StatefulWidget {
   final AuthFormType authFormType;
@@ -64,7 +64,8 @@ class _SignUpViewState extends State<SignUpView> {
             Navigator.of(context).pushReplacementNamed('/home');
             break;
           case AuthFormType.signUp:
-            await auth.createUserWithEmailAndPassword(_email!, _password!, _name!);
+            await auth.createUserWithEmailAndPassword(
+                _email!, _password!, _name!);
             Navigator.of(context).pushReplacementNamed('/home');
             break;
           case AuthFormType.reset:
@@ -87,36 +88,41 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-      return Scaffold(
-        body: SingleChildScrollView(
-            child: Container(
-              color: primaryColor,
-              height: _height,
-              width: _width,
-              child: SafeArea(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: _height * 0.025),
-                    showAlert(),
-                    SizedBox(height: _height * 0.025),
-                    buildHeaderText(),
-                    SizedBox(height: _height * 0.05),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          children: buildInputs() + buildButtons(),
-                        ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Background(
+          child: Container(
+            // color: primaryColor,
+            color: Colors.transparent,
+            height: _height,
+            width: _width,
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: _height * 0.2),
+                  showAlert(),
+                  SizedBox(height: _height * 0.025),
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      child: buildHeaderText()),
+                  SizedBox(height: _height * 0.05),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: buildInputs() + buildButtons(),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
-
-      );
+        ),
+      ),
+    );
   }
 
   Widget showAlert() {
@@ -163,14 +169,13 @@ class _SignUpViewState extends State<SignUpView> {
       _headerText = "Sign In";
     } else if (authFormType == AuthFormType.reset) {
       _headerText = "Reset Password";
-    }
-    else {
-      _headerText = "Create New Account";
+    } else {
+      _headerText = "Register";
     }
     return AutoSizeText(
       _headerText,
       maxLines: 1,
-      textAlign: TextAlign.center,
+      textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 35,
         color: Colors.black87,
@@ -195,11 +200,8 @@ class _SignUpViewState extends State<SignUpView> {
     }
 
     // add email & password
-    if ([
-      AuthFormType.signUp,
-      AuthFormType.reset,
-      AuthFormType.signIn
-    ].contains(authFormType)) {
+    if ([AuthFormType.signUp, AuthFormType.reset, AuthFormType.signIn]
+        .contains(authFormType)) {
       textFields.add(
         TextFormField(
           validator: EmailValidator.validate,
@@ -213,7 +215,7 @@ class _SignUpViewState extends State<SignUpView> {
 
     if (authFormType != AuthFormType.reset
         // && authFormType != AuthFormType.phone
-    ) {
+        ) {
       textFields.add(
         TextFormField(
           validator: PasswordValidator.validate,
@@ -227,6 +229,7 @@ class _SignUpViewState extends State<SignUpView> {
     }
     return textFields;
   }
+
   ///buildInputs end
 
   InputDecoration buildSignUpInputDecoration(String hint) {
@@ -238,7 +241,7 @@ class _SignUpViewState extends State<SignUpView> {
       enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white, width: 0.0)),
       contentPadding:
-      const EdgeInsets.only(left: 14.0, bottom: 10.0, top: 10.0),
+          const EdgeInsets.only(left: 14.0, bottom: 10.0, top: 10.0),
     );
   }
 
@@ -277,9 +280,9 @@ class _SignUpViewState extends State<SignUpView> {
         width: MediaQuery.of(context).size.width * 0.7,
         child: RaisedButton(
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-          color: Color(0XFF3E3993),
-          textColor: primaryColor,
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+          color: LightColor.yellow,
+          textColor: LightColor.titleTextColor,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -299,7 +302,6 @@ class _SignUpViewState extends State<SignUpView> {
         ),
         onPressed: () {
           switchFormState(_newFormState);
-
         },
       ),
       buildSocialIcons(_showSocial),
@@ -329,9 +331,9 @@ class _SignUpViewState extends State<SignUpView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Divider(
-            color: Colors.black87,
-          ),
+          // Divider(
+          //   color: Colors.black87,
+          // ),
           SizedBox(height: 10),
         ],
       ),

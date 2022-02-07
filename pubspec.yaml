@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.10.0-0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -39,6 +39,7 @@ dependencies:
   cloud_firestore: ^3.1.7
   provider: ^6.0.2
   google_fonts: ^2.3.1
+  flutter_icons: ^1.1.0
   intl: ^0.17.0
 
   # Dependency for login authentication
@@ -46,6 +47,9 @@ dependencies:
 
   # Dependency for generating unique transaction ID
   uuid: ^3.0.4
+
+  #FLutter slideable
+  flutter_slidable: ^1.2.0
 
   auto_size_text: ^3.0.0
   fluttertoast: ^8.0.7
@@ -55,6 +59,7 @@ dependencies:
   qr_code_scanner: ^0.6.1
   firebase_messaging: ^11.2.6
   mailer: ^5.1.0
+  currency_text_input_formatter: ^2.1.5
 
 
 
@@ -93,6 +98,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

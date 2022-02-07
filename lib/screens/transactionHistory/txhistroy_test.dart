@@ -65,17 +65,22 @@ class _txhistory_testState extends State<txhistory_test> {
           child:
           Scaffold(
             appBar: AppBar(
+              foregroundColor: Colors.white,
+              backgroundColor: LightColor.navyBlue1,
               title: const Text('Transaction History'),
               centerTitle: true,
               bottom: const TabBar(
+                unselectedLabelColor: LightColor.darkgrey,
+                labelColor: Colors.white,
+                indicatorColor: LightColor.yellow,
                 tabs: [
                   Tab(
                     // icon: Icon(MdiIcons.remoteTv),
-                    text: "Send",
+                    text: "Paid",
                   ),
                   Tab(
                     // icon: Icon(MdiIcons.remoteTv),
-                    text: "Receive",
+                    text: "Received",
                   ),
                 ],
               ),

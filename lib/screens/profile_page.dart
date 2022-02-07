@@ -26,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final authData = snapshot.data;
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: LightColor.navyBlue1,
         body: Container(
           height: MediaQuery.of(context).size.height,
           child: Stack(
@@ -92,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 20,
                     ),
                     profileMenu('${authData.displayName ?? '??'}',Icons.person),
-                    profileMenu('${authData.email ?? '??'}',Icons.person),
+                    profileMenu('${authData.email ?? '??'}',Icons.email_rounded),
                     // Container(
                     //   width: 130,
                     //   padding: const EdgeInsets.symmetric(
@@ -159,7 +159,7 @@ Widget profileMenu(text, icon){
     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
     child: TextButton(
       style: TextButton.styleFrom(
-        // primary: kPrimaryColor,
+        primary: LightColor.black,
         padding: EdgeInsets.all(20),
         shape:
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

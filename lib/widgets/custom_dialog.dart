@@ -66,7 +66,7 @@ class CustomDialog extends StatelessWidget {
                 ),
                 SizedBox(height: 24.0),
                 RaisedButton(
-                  // color: primaryColor,
+                  color: LightColor.navyBlue2,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
                   child: Padding(

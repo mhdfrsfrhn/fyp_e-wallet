@@ -23,13 +23,13 @@ class _QRCodeGenState extends State<QRCodeGen> {
     );
   }
 
-  Widget profileView(context, snapshot){
+  Widget profileView(context, snapshot) {
     final bodyHeight = MediaQuery.of(context).size.height;
-        // - MediaQuery.of(context).viewInsets.bottom;
+    // - MediaQuery.of(context).viewInsets.bottom;
     final authData = snapshot.data;
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: LightColor.navyBlue1,
         body: Container(
           height: MediaQuery.of(context).size.height,
           child: Stack(
@@ -95,24 +95,38 @@ class _QRCodeGenState extends State<QRCodeGen> {
                     //   height: 20,
                     // ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: TextButton(
                         style: TextButton.styleFrom(
                           // primary: kPrimaryColor,
                           padding: EdgeInsets.all(20),
-                          shape:
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
                           backgroundColor: Color(0xFFF5F6F9),
                         ),
-                        onPressed: (){},
+                        onPressed: () {},
                         child: Container(
-                          height: 300,
-                          width: 250,
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          width: MediaQuery.of(context).size.width,
                           child: RepaintBoundary(
                             // key: globalKey,
 
                             ///QR GEN
-                            child: QrImage(data: '${authData.email ?? '??'}', size: 0.35 * bodyHeight),
+                            child: Column(
+                              children: [
+                                QrImage(
+                                    data: '${authData.email ?? '??'}',
+                                    size: bodyHeight * 0.35),
+                                AutoSizeText(
+                                  'Show your QR code to payer to receive money',
+                                  maxLines: 1,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: LightColor.titleTextColor),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         // QrImage(data: '${authData.email ?? '??'}', size: 0.35 * bodyHeight),
@@ -137,6 +151,7 @@ class _QRCodeGenState extends State<QRCodeGen> {
                       flex: 2,
                       child: SizedBox(),
                     ),
+
                     /// _transferButton(),
                   ],
                 ),
@@ -178,5 +193,3 @@ class _QRCodeGenState extends State<QRCodeGen> {
         ));
   }
 }
-
-

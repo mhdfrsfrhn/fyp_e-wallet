@@ -1,3 +1,4 @@
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:fyp3/imports.dart';
 import 'package:fyp3/screens/txhistory_builditem.dart';
 
@@ -130,12 +131,16 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const TitleText(
-                      text: "Transactions",
+                      text: "Recent Payment",
                     ),
                     GestureDetector(
-                        child: const TitleText(
-                          fontSize: 10,
-                          text: "See all",
+                        child: Text(
+                          'See all',
+                          style: GoogleFonts.mulish(
+                              decoration: TextDecoration.underline,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              color: LightColor.navyBlue2),
                         ),
                         onTap: () {
                           Navigator.pushNamed(context, '/txHistorypagetest');
@@ -143,11 +148,14 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 Container(
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
                   constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.3,
-                      maxWidth: MediaQuery.of(context).size.width,
+                    // height: MediaQuery.of(context).size.height * 0.1,
+                    minHeight: MediaQuery.of(context).size.height * 0.1,
+                    maxHeight: MediaQuery.of(context).size.height * 0.4,
+                    maxWidth: MediaQuery.of(context).size.width,
                   ),
-                  height: MediaQuery.of(context).size.height * 0,
+
                   // width: MediaQuery.of(context).size.width,
                   child: SendHistory_BuildItem(),
                 ),
@@ -211,8 +219,8 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         _icon(
-          icon: Icons.transfer_within_a_station,
-          text: "Transfer",
+          icon: Icons.qr_code,
+          text: "QR Pay",
           onTap: () async {
             bool isAuthenticated =
                 await Authentication.authenticateWithBiometrics();
@@ -221,35 +229,13 @@ class _HomePageState extends State<HomePage> {
               Navigator.pushNamed(context, '/qr_scan');
             } else {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Error authenticating using Biometrics.'))
-                  // Authentication.SnackBar(
-                  //   content: 'Error authenticating using Biometrics.',
-                  // ),
-                  );
+                  content: Text('Error authenticating using Biometrics.')));
             }
           },
-          // Navigator.pushNamed(context, '/qr_scan');
         ),
-        // _icon(Icons.phone, "Airtime"),
         _icon(
-          icon: Icons.history,
-          text: "Transaction History",
-          onTap: () {
-            Navigator.pushNamed(context, '/txHistorypagetest');
-          },
-        ),
-        // _icon(Icons.payment, "Pay Bills"),
-        // _icon(
-        //   icon: Icons.payment,
-        //   text: "Pay Bills",
-        //   onTap: () {
-        //     Navigator.pushNamed(context, '/transfer');
-        //   },
-        // ),
-        // _icon(Icons.code, "Qr Pay"),
-        _icon(
-          icon: Icons.code,
-          text: "QR Pay",
+          icon: FontAwesome5Solid.hand_holding_usd,
+          text: "Receive Payment",
           onTap: () {
             Navigator.pushNamed(context, '/qr_code_gen');
           },
@@ -259,9 +245,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _icon(
-      {required IconData icon,
-      required String text,
-      required GestureTapCallback onTap}) {
+      {required IconData? icon,
+      required String? text,
+      required GestureTapCallback? onTap}) {
     return Column(
       children: <Widget>[
         GestureDetector(
@@ -282,7 +268,7 @@ class _HomePageState extends State<HomePage> {
             child: Icon(icon),
           ),
         ),
-        Text(text,
+        Text(text!,
             style: GoogleFonts.mulish(
                 textStyle: Theme.of(context).textTheme.headline4,
                 fontSize: 15,
@@ -292,46 +278,46 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _transectionList() {
-    return Column(
-      children: <Widget>[
-        _transaction("Flight Ticket", "23 Feb 2020"),
-        _transaction("Electricity Bill", "25 Feb 2020"),
-        _transaction("Flight Ticket", "03 Mar 2020"),
-      ],
-    );
-  }
+// Widget _transectionList() {
+//   return Column(
+//     children: <Widget>[
+//       _transaction("Flight Ticket", "23 Feb 2020"),
+//       _transaction("Electricity Bill", "25 Feb 2020"),
+//       _transaction("Flight Ticket", "03 Mar 2020"),
+//     ],
+//   );
+// }
 
-  Widget _transaction(String text, String time) {
-    return ListTile(
-      leading: Container(
-        height: 50,
-        width: 50,
-        decoration: const BoxDecoration(
-          color: LightColor.navyBlue1,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: const Icon(Icons.account_balance_wallet_outlined, color: Colors.white),
-      ),
-      contentPadding: const EdgeInsets.symmetric(),
-      title: TitleText(
-        text: text,
-        fontSize: 14,
-      ),
-      subtitle: Text(time),
-      trailing: Container(
-          height: 30,
-          width: 60,
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            color: LightColor.lightGrey,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          child: Text('-20 MLR',
-              style: GoogleFonts.mulish(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: LightColor.navyBlue2))),
-    );
-  }
+// Widget _transaction(String text, String time) {
+//   return ListTile(
+//     leading: Container(
+//       height: 50,
+//       width: 50,
+//       decoration: const BoxDecoration(
+//         color: LightColor.navyBlue1,
+//         borderRadius: BorderRadius.all(Radius.circular(10)),
+//       ),
+//       child: const Icon(Icons.account_balance_wallet_outlined, color: Colors.white),
+//     ),
+//     contentPadding: const EdgeInsets.symmetric(),
+//     title: TitleText(
+//       text: text,
+//       fontSize: 14,
+//     ),
+//     subtitle: Text(time),
+//     trailing: Container(
+//         height: 30,
+//         width: 60,
+//         alignment: Alignment.center,
+//         decoration: const BoxDecoration(
+//           color: LightColor.lightGrey,
+//           borderRadius: BorderRadius.all(Radius.circular(10)),
+//         ),
+//         child: Text('-20 MLR',
+//             style: GoogleFonts.mulish(
+//                 fontSize: 12,
+//                 fontWeight: FontWeight.bold,
+//                 color: LightColor.navyBlue2))),
+//   );
+// }
 }

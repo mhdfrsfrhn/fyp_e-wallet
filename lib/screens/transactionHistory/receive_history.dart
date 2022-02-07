@@ -19,10 +19,10 @@ class _ReceiveHistoryState extends State<ReceiveHistory> {
       stream: FirebaseFirestore.instance
           .collection('transactionHistory')
           // .where('SenderEmail', isEqualTo: user.email)
-      .where('RecipientEmail', isEqualTo: user.email)
-      // .where(user.email.toString(), arrayContainsAny: ['SenderEmail', 'RecipientEmail'])
-      // .where(user.email.toString(), whereIn: ["SenderEmail","RecipientEmail"])
-      // .orderBy('DTime', descending: true)
+          .where('RecipientEmail', isEqualTo: user.email)
+          // .where(user.email.toString(), arrayContainsAny: ['SenderEmail', 'RecipientEmail'])
+          // .where(user.email.toString(), whereIn: ["SenderEmail","RecipientEmail"])
+          .orderBy('TimeDate', descending: true)
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
@@ -54,12 +54,11 @@ class _ReceiveHistoryState extends State<ReceiveHistory> {
         } else {
           return Container(
             child: ListView.builder(
-              itemCount:
-              snapshot.hasData ? snapshot.data!.docs.length : 0,
+              itemCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
               itemBuilder: (context, index) {
                 if (snapshot.data!.docs[index]
-                    .get('RecipientEmail')
-                    .toString() ==
+                        .get('RecipientEmail')
+                        .toString() ==
                     user.email) {
                   return Card(
                     child: ListTile(
@@ -81,8 +80,8 @@ class _ReceiveHistoryState extends State<ReceiveHistory> {
                     ),
                   );
                 } else if (snapshot.data!.docs[index]
-                    .get('SenderEmail')
-                    .toString() ==
+                        .get('SenderEmail')
+                        .toString() ==
                     user.email) {
                   return Card(
                     child: ListTile(

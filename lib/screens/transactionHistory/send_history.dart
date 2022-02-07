@@ -13,8 +13,8 @@ class _SendHistoryState extends State<SendHistory> {
   static get user => FirebaseAuth.instance.currentUser!;
   final Query _sendHistory = FirebaseFirestore.instance
       .collection('transactionHistory')
-      .where('SenderEmail', isEqualTo: user.email);
-      // .orderBy('DTime', descending: true);
+      .where('SenderEmail', isEqualTo: user.email)
+      .orderBy('TimeDate', descending: true);
   final auth = FirebaseAuth.instance;
 
 
