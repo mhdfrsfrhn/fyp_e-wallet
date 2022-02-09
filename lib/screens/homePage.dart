@@ -219,7 +219,7 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         _icon(
-          icon: Icons.qr_code,
+          icon: MaterialCommunityIcons.qrcode_scan,
           text: "QR Pay",
           onTap: () async {
             bool isAuthenticated =

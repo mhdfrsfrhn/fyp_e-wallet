@@ -1,13 +1,12 @@
-import 'package:fyp3/services/credential.dart';
 import 'package:fyp3/imports.dart';
 import 'package:fyp3/screens/transfer/receipt_qr.dart';
+import 'package:fyp3/services/credential.dart';
 import 'package:fyp3/services/fingerauth.dart';
 import 'package:fyp3/utils/utils.dart';
 import 'package:fyp3/widgets/widgets.dart';
-import 'package:local_auth/auth_strings.dart';
-
-import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
+import 'package:local_auth/auth_strings.dart';
+import 'package:uuid/uuid.dart';
 
 class PassreceiptQR {
   final String? transactionid,
@@ -17,7 +16,7 @@ class PassreceiptQR {
       recipientreference;
   final double? amount;
 
-  const PassreceiptQR ({
+  const PassreceiptQR({
     this.transactionid,
     this.timedate,
     this.recipientemail,
@@ -52,7 +51,6 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
   bool _isBioFinger = false;
   bool _isLoading = false;
 
-
   @override
   void initState() {
     super.initState();
@@ -70,7 +68,8 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
           centerTitle: true,
           title: Text(
             'Transfer Menu',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+            style: TextStyle(
+                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ),
         resizeToAvoidBottomInset: false,
@@ -122,6 +121,10 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
                         .get()
                         .then((snapshot) {
                       return snapshot.docs[0].id;
+                    }).catchError((e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('TextFormField is empty!')));
+                      // print('Some error happened somehow');
                     }); // Read user ID of the account that you want to transfer
                     print("transferDocId: " + transferDocId);
                     await FirebaseFirestore.instance
@@ -145,57 +148,60 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
                       }
                     });
                     if (validatedAmount) {
-
                       // if (await _startFingerAuth() != "Failed") {
-                        WriteBatch batch = db.batch();
-                        var transferAccount =
-                        db.collection('users').doc(transferDocId);
-                        batch.update(transferAccount, {
-                          "money": FieldValue.increment(
-                              double.parse(_amount.text.toString()))
-                        });
-                        print("Current user ID: " + user.uid.toString());
-                        var currentAccount = db.collection('users').doc(user.uid);
-                        batch.update(currentAccount, {
-                          "money": FieldValue.increment(
-                              double.parse(_amount.text.toString()) * -1) // 30 * -1
-                        });
-                        ///sending email
-                        sendEmail(context, _amount.text, widget.value.email);
+                      WriteBatch batch = db.batch();
+                      var transferAccount =
+                          db.collection('users').doc(transferDocId);
+                      batch.update(transferAccount, {
+                        "money": FieldValue.increment(
+                            double.parse(_amount.text.toString()))
+                      });
+                      print("Current user ID: " + user.uid.toString());
+                      var currentAccount = db.collection('users').doc(user.uid);
+                      batch.update(currentAccount, {
+                        "money": FieldValue.increment(
+                            double.parse(_amount.text.toString()) * -1)
+                        // 30 * -1
+                      });
 
-                        CollectionReference transactionHistoryRef =
-                        FirebaseFirestore.instance
-                            .collection('transactionHistory');
-                        var uuid = Uuid();
-                        var transactionId = uuid.v1().toString();
-                        var transactionHistory = db
-                            .collection('transactionHistory')
-                            .doc(transactionId);
-                        print("ID Transaction: " + transactionId);
-                        var dateTime = DateFormat('EEE d MMM yyyy kk:mm:ss')
-                            .format(DateTime.now());
-                        batch.set(transactionHistory, {
-                          "TimeDate": FieldValue.serverTimestamp(),
-                          "DTime" : dateTime.toString(),
-                          "AmountReceived": double.parse((_amount.text.toString())),
-                          "RecipientEmail": widget.value.email.toString(),
-                          "RecipientReference": _reference.text.toString(),
-                          "RecipientUID": transferDocId.toString(),
-                          "SenderEmail": user.email,
-                          "SenderUID": user.uid
-                        });
-                        await batch.commit();
-                        var route = new MaterialPageRoute(
-                            builder: (BuildContext context) => new ReceiptScreenQR(
-                                value: PassreceiptQR(
-                                  transactionid: transactionId.toString(),
-                                  timedate: dateTime.toString(),
-                                  recipientemail: widget.value.email,
-                                  recipientuid: transferDocId.toString(),
-                                  recipientreference: _reference.text.toString(),
-                                  amount: double.parse((_amount.text.toString())),
-                                )));
-                        Navigator.of(context).pushReplacement(route);
+                      ///sending email
+                      sendEmail(context, _amount.text, widget.value.email);
+
+                      CollectionReference transactionHistoryRef =
+                          FirebaseFirestore.instance
+                              .collection('transactionHistory');
+                      var uuid = Uuid();
+                      var transactionId = uuid.v1().toString();
+                      var transactionHistory = db
+                          .collection('transactionHistory')
+                          .doc(transactionId);
+                      print("ID Transaction: " + transactionId);
+                      var dateTime = DateFormat('EEE d MMM yyyy kk:mm:ss')
+                          .format(DateTime.now());
+                      batch.set(transactionHistory, {
+                        "TimeDate": FieldValue.serverTimestamp(),
+                        "DTime": dateTime.toString(),
+                        "AmountReceived":
+                            double.parse((_amount.text.toString())),
+                        "RecipientEmail": widget.value.email.toString(),
+                        "RecipientReference": _reference.text.toString(),
+                        "RecipientUID": transferDocId.toString(),
+                        "SenderEmail": user.email,
+                        "SenderUID": user.uid
+                      });
+                      await batch.commit();
+                      var route = new MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              new ReceiptScreenQR(
+                                  value: PassreceiptQR(
+                                transactionid: transactionId.toString(),
+                                timedate: dateTime.toString(),
+                                recipientemail: widget.value.email,
+                                recipientuid: transferDocId.toString(),
+                                recipientreference: _reference.text.toString(),
+                                amount: double.parse((_amount.text.toString())),
+                              )));
+                      Navigator.of(context).pushReplacement(route);
                       // } else {
                       //   wShowToast("Authentication Failed");
                       // }
@@ -226,7 +232,6 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
     );
   }
 
-
   ///Enter amount
   Widget wEnterAmount(BuildContext context) {
     return Container(
@@ -235,7 +240,6 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
       child: TextFormField(
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [
-
           // Allow Decimal Number With Precision of 2 Only
           FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
         ],
@@ -348,4 +352,3 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
     );
   }
 }
-

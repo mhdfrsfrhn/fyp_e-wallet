@@ -33,12 +33,14 @@ class Background extends StatelessWidget {
               width: size.width
             ),
           ),
-          Positioned(
-            top: 50,
-            left: 30,
-            child: Image.asset(
-              "assets/images/e-walletHome.png",
-              width: size.width * 0.3
+          Visibility(
+            visible: false,
+            child: Positioned(
+              top: 20,
+              child: Image.asset(
+                "assets/e-walletLogo.png",
+                width: size.width * 0.7
+              ),
             ),
           ),
           Positioned(

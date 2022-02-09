@@ -99,14 +99,14 @@ class _SignUpViewState extends State<SignUpView> {
             child: SafeArea(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: _height * 0.2),
+                  SizedBox(height: _height * 0.25),
                   showAlert(),
-                  SizedBox(height: _height * 0.025),
+                  SizedBox(height: _height * 0.015),
                   Container(
                       alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      padding: EdgeInsets.symmetric(horizontal: 30),
                       child: buildHeaderText()),
-                  SizedBox(height: _height * 0.05),
+                  SizedBox(height: _height * 0.02),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Form(
@@ -176,9 +176,10 @@ class _SignUpViewState extends State<SignUpView> {
       _headerText,
       maxLines: 1,
       textAlign: TextAlign.left,
-      style: TextStyle(
-        fontSize: 35,
-        color: Colors.black87,
+      style: GoogleFonts.nunito(
+        fontWeight: FontWeight.w600,
+        fontSize: 30,
+        color: LightColor.titleTextColor,
       ),
     );
   }
@@ -236,10 +237,10 @@ class _SignUpViewState extends State<SignUpView> {
     return InputDecoration(
       hintText: hint,
       filled: true,
-      fillColor: Colors.white,
+      fillColor: Colors.white70,
       focusColor: Colors.white,
       enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 0.0)),
+          borderSide: BorderSide(color: Colors.grey, width: 0.05  )),
       contentPadding:
           const EdgeInsets.only(left: 14.0, bottom: 10.0, top: 10.0),
     );

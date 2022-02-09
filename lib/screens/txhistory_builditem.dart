@@ -1,4 +1,6 @@
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fyp3/imports.dart';
+import 'package:fyp3/screens/transfer/transfer_process_qr.dart';
 
 class SendHistory_BuildItem extends StatefulWidget {
   const SendHistory_BuildItem({Key? key}) : super(key: key);
@@ -65,39 +67,77 @@ class _SendHistory_BuildItemState extends State<SendHistory_BuildItem> {
               itemBuilder: (context, index) {
                 if (snapshot.data!.docs[index].get('SenderEmail').toString() ==
                     user.email) {
-                  return ListTile(
-                    leading: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: const BoxDecoration(
-                        color: LightColor.navyBlue1,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: const Icon(Icons.account_balance_wallet_outlined,
-                          color: Colors.white),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(),
-                    title: TitleText(
-                      text:
-                          'To: ${snapshot.data!.docs[index].get('RecipientEmail').toString()}',
-                      fontSize: 14,
-                    ),
-                    subtitle: Text(
-                        '${snapshot.data!.docs[index].get('DTime').toString()}'),
-                    trailing: Container(
-                        height: 30,
-                        width: 60,
-                        alignment: Alignment.center,
+                  final emailValue =
+                      snapshot.data!.docs[index].get('RecipientEmail');
+                  return Slidable(
+                    actionPane: SlidableDrawerActionPane(),
+                    actionExtentRatio: 0.23,
+                      secondaryActions:<Widget> [
+                        IconSlideAction(
+                          // An action can be bigger than the others.
+                          onTap: () async {
+                            bool isAuthenticated =
+                            await Authentication.authenticateWithBiometrics();
+
+                            if (isAuthenticated) {
+                              var route = MaterialPageRoute(
+                                  builder: (BuildContext context) => new TransferProcessQR(
+                                      value: PassdataQR(
+                                        email: emailValue,
+                                      )));
+                              Navigator.of(context).push(route);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text('Error authenticating using Biometrics.')));
+                            }
+                          },
+                          // backgroundColor: Color(0xFF7BC043),
+                          foregroundColor: Colors.green,
+                          icon: Icons.payments_rounded,
+                          caption: 'Quick Pay',
+                        ),
+                        IconSlideAction(
+                          onTap: () {_showSnackBar(context, 'Button Close pressed');},
+                          // backgroundColor: Colors.transparent,
+                          foregroundColor: Colors.black,
+                          icon: Icons.close,
+                          // label: 'Save',
+                        ),
+                      ],
+                    child: ListTile(
+                      leading: Container(
+                        height: 50,
+                        width: 50,
                         decoration: const BoxDecoration(
-                          color: LightColor.lightGrey,
+                          color: LightColor.navyBlue1,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
-                        child: Text(
-                            '-RM ${snapshot.data!.docs[index].get('AmountReceived').toString()}',
-                            style: GoogleFonts.mulish(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: LightColor.navyBlue2))),
+                        child: const Icon(Icons.account_balance_wallet_outlined,
+                            color: Colors.white),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(),
+                      title: TitleText(
+                        text:
+                            'To: ${snapshot.data!.docs[index].get('RecipientEmail').toString()}',
+                        fontSize: 14,
+                      ),
+                      subtitle: Text(
+                          '${snapshot.data!.docs[index].get('DTime').toString()}'),
+                      trailing: Container(
+                          height: 30,
+                          width: 60,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            color: LightColor.lightGrey,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          child: Text(
+                              '-RM ${snapshot.data!.docs[index].get('AmountReceived').toString()}',
+                              style: GoogleFonts.mulish(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: LightColor.navyBlue2))),
+                    ),
                   );
                 } else {
                   return Text('');
@@ -164,4 +204,16 @@ class _SendHistory_BuildItemState extends State<SendHistory_BuildItem> {
       },
     );
   }
+
+  Scaffold _doPrintTest(BuildContext context) {
+    return Scaffold(
+      body: Text('test'),
+    );
+  }
+}
+
+void _showSnackBar(BuildContext context, String text) {
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text(text)));
 }
