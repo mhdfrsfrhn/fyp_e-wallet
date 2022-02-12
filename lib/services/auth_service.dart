@@ -1,6 +1,5 @@
-
-
 import 'package:fyp3/imports.dart';
+import 'package:intl/intl.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
@@ -27,8 +26,9 @@ class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Stream<String> get onAuthStateChanged => _firebaseAuth.authStateChanges().map(
-        (User? user) => user!.uid,
+  Stream<String> get onAuthStateChanged =>
+      _firebaseAuth.authStateChanges().map(
+            (User? user) => user!.uid,
       );
 
   // GET UID
@@ -56,8 +56,9 @@ class AuthService {
   }
 
   // Email & Password Sign Up
-  Future<String> createUserWithEmailAndPassword(
-      String email, String password, String name) async {
+  Future<String> createUserWithEmailAndPassword(String email, String password,
+      String name) async {
+
     final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -74,6 +75,16 @@ class AuthService {
       'userID': authResult.user!.uid
     });
 
+    ///Create today expenses doc
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(authResult.user!.uid)
+        .collection('expenses')
+        .doc(formattedDate)
+        .set({
+      'expenses':0
+    });
+
     // Update the username
     await updateUserName(name, authResult.user!);
     return authResult.user!.uid;
@@ -85,10 +96,10 @@ class AuthService {
   }
 
   // Email & Password Sign In
-  Future<String?> signInWithEmailAndPassword(
-      String email, String password) async {
+  Future<String?> signInWithEmailAndPassword(String email,
+      String password) async {
     return (await _firebaseAuth.signInWithEmailAndPassword(
-            email: email, password: password))
+        email: email, password: password))
         .user!
         .uid;
   }
@@ -104,18 +115,17 @@ class AuthService {
   }
 
 
-
   // Create Anonymous User
   Future singInAnonymously() {
     return _firebaseAuth.signInAnonymously();
   }
 
-  Future convertUserWithEmail(
-      String email, String password, String name) async {
+  Future convertUserWithEmail(String email, String password,
+      String name) async {
     final currentUser = _firebaseAuth.currentUser;
 
     final credential =
-        EmailAuthProvider.credential(email: email, password: password);
+    EmailAuthProvider.credential(email: email, password: password);
     await currentUser!.linkWithCredential(credential);
     await updateUserName(name, currentUser);
   }

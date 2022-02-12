@@ -156,12 +156,28 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
                         "money": FieldValue.increment(
                             double.parse(_amount.text.toString()))
                       });
+
+                      /// Refer here
                       print("Current user ID: " + user.uid.toString());
                       var currentAccount = db.collection('users').doc(user.uid);
                       batch.update(currentAccount, {
                         "money": FieldValue.increment(
                             double.parse(_amount.text.toString()) * -1)
                         // 30 * -1
+                      });
+
+                      //TODO:
+                      print('adding new expenses: ' +
+                          _amount.text.toString() +
+                          ' to database');
+                      var currentAccExpenses = db
+                          .collection('users')
+                          .doc(user.uid)
+                          .collection('expenses')
+                          .doc(formattedDate);
+                      batch.update(currentAccExpenses, {
+                        'expenses': FieldValue.increment(
+                            double.parse(_amount.text.toString()))
                       });
 
                       ///sending email

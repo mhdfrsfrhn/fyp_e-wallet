@@ -8,6 +8,7 @@ export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 export 'package:firebase_messaging/firebase_messaging.dart';
 
+
 //path_provider
 export 'package:path_provider/path_provider.dart';
 //auto_size_text
@@ -35,5 +36,11 @@ export 'widgets/balance_card.dart';
 export 'widgets/title_text.dart';
 
 export 'theme/light_color.dart';
+export 'theme/background.dart';
 
 export 'services/auth_service.dart';
+
+import 'package:intl/intl.dart';
+
+DateTime date = DateTime.now();
+String formattedDate = DateFormat('dd-MM-yyyy').format(date);

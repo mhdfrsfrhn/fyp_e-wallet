@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:fyp3/carousel.dart';
 import 'package:fyp3/imports.dart';
 import 'package:fyp3/screens/txhistory_builditem.dart';
 
@@ -37,32 +39,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget homeView(context, snapshot) {
+    List<int> list = [1, 2, 3, 4, 5];
     final authData = snapshot.data;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: RichText(
-      //     text: TextSpan(
-      //       style: TextStyle(color: Colors.black),
-      //       children: <TextSpan>[
-      //         TextSpan(
-      //             text: 'Zwallet | ',
-      //             style: GoogleFonts.quicksand(fontSize: 20.0)),
-      //         TextSpan(
-      //             text: 'by farrriso ',
-      //             style: GoogleFonts.quicksand(
-      //                 fontSize: 14.0, color: Colors.grey)),
-      //         TextSpan(
-      //             text: '& ahmaddnazrii',
-      //             style:
-      //                 GoogleFonts.quicksand(fontSize: 14.0, color: Colors.grey))
-      //       ],
-      //     ),
-      //   ),
-      //   backgroundColor: Colors.transparent,
-      //   shadowColor: Colors.transparent,
-      //   foregroundColor: Colors.black,
-      // ),
-      // bottomNavigationBar: BottomNavigation(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -83,21 +62,14 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     const SizedBox(width: 15),
-                    _nameText('Hello, ${authData.displayName ?? '??'}'),
-                    // Text(
-                    //     userName,
-                    //     style: GoogleFonts.mulish(
-                    //         fontSize: 18,
-                    //         fontWeight: FontWeight.w600,
-                    //         color: LightColor.navyBlue2)),
+                    _nameText(
+                        'Hello, ${authData.displayName ?? 'Welcome to Z-wallet'}'),
                     const Expanded(
                       child: SizedBox(),
                     ),
                     GestureDetector(
                       onTap: () {
                         showAlertDialog(context);
-                        // AuthProvider.of(context)!.auth.signOut();
-                        // Navigator.of(context).pushReplacementNamed('/signIn');
                       },
                       child: Icon(
                         Icons.logout,
@@ -109,13 +81,17 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 40,
                 ),
-                const TitleText(text: "My wallet"),
+                const TitleText(text: "Z-wallet"),
                 const SizedBox(
                   height: 20,
                 ),
-                const BalanceCard(),
+
+                /// TO BE EXPERIMENT !!!
+                // const BalanceCard(),
+                const Carousel(),
+
                 const SizedBox(
-                  height: 50,
+                  height: 20,
                 ),
                 const TitleText(
                   text: "Operations",
@@ -135,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     GestureDetector(
                         child: Text(
-                          'See all',
+                          'View all',
                           style: GoogleFonts.mulish(
                               decoration: TextDecoration.underline,
                               fontSize: 11,
@@ -150,13 +126,11 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
                   constraints: BoxConstraints(
-                    // height: MediaQuery.of(context).size.height * 0.1,
                     minHeight: MediaQuery.of(context).size.height * 0.1,
-                    maxHeight: MediaQuery.of(context).size.height * 0.4,
+                    maxHeight: MediaQuery.of(context).size.height * 0.41,
                     maxWidth: MediaQuery.of(context).size.width,
                   ),
 
-                  // width: MediaQuery.of(context).size.width,
                   child: SendHistory_BuildItem(),
                 ),
                 // _transectionList(),
@@ -165,8 +139,35 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Divider(thickness: 2),
                 Center(
-                    child: Text('@Z-Wallet beta 1.0',
-                        style: TextStyle(color: Colors.grey))),
+                    child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: GoogleFonts.mulish(color: Colors.grey, fontSize: 13),
+                    children: [
+                      TextSpan(
+                        text: "@Z-wallet beta 1.0\n\n",
+                          style: GoogleFonts.mulish(color: Colors.grey, fontSize: 14)
+                      ),
+                      TextSpan(
+                        text: "by ",
+                      ),
+                      WidgetSpan(
+                          child: Icon(FontAwesome5Brands.facebook_square,
+                              size: 14, color: LightColor.lightBlue2)),
+                      TextSpan(
+                        text: "arrriso & ",
+                      ),
+                      WidgetSpan(
+                          child: Icon(
+                        FontAwesome5Brands.app_store_ios,
+                        size: 14,
+                      )),
+                      TextSpan(
+                        text: "hmaddnazrii",
+                      ),
+                    ],
+                  ),
+                )),
                 const SizedBox(
                   height: 5,
                 ),
@@ -319,5 +320,4 @@ class _HomePageState extends State<HomePage> {
 //                 fontWeight: FontWeight.bold,
 //                 color: LightColor.navyBlue2))),
 //   );
-// }
 }

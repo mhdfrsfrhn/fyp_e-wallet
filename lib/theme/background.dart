@@ -34,12 +34,13 @@ class Background extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: false,
+            visible: true,
             child: Positioned(
-              top: 20,
+              top: size.height * 0.07,
               child: Image.asset(
                 "assets/e-walletLogo.png",
-                width: size.width * 0.7
+                width: size.width * 0.6,
+                height: size.height * 0.11,
               ),
             ),
           ),

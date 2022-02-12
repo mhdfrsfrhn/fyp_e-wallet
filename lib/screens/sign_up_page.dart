@@ -1,7 +1,5 @@
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:fyp3/imports.dart';
-import 'package:fyp3/theme/background.dart';
-
-// final primaryColor = const Color(0xFFF0F0F0);
 
 enum AuthFormType { signIn, signUp, reset }
 
@@ -92,23 +90,23 @@ class _SignUpViewState extends State<SignUpView> {
       body: SingleChildScrollView(
         child: Background(
           child: Container(
-            // color: primaryColor,
             color: Colors.transparent,
             height: _height,
             width: _width,
             child: SafeArea(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: _height * 0.25),
                   showAlert(),
-                  SizedBox(height: _height * 0.015),
+                  SizedBox(height: 10),
+                  Spacer(),
                   Container(
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.symmetric(horizontal: 30),
                       child: buildHeaderText()),
-                  SizedBox(height: _height * 0.02),
+                  SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 15),
                     child: Form(
                       key: formKey,
                       child: Column(
@@ -116,6 +114,34 @@ class _SignUpViewState extends State<SignUpView> {
                       ),
                     ),
                   ),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style:
+                          GoogleFonts.mulish(fontSize: 10, color: Colors.grey),
+                      children: [
+                        TextSpan(
+                            text: "Powered by :\n",
+                            style: GoogleFonts.mulish(
+                                fontSize: 10, color: Colors.grey)),
+                        WidgetSpan(
+                            child: Icon(MaterialCommunityIcons.firebase,
+                                color: LightColor.yellow, size: 15)),
+                        TextSpan(
+                          text: " Firebase & ",
+                        ),
+                        WidgetSpan(
+                            child: Icon(Icons.flutter_dash_outlined,
+                                color: Colors.lightBlue, size: 15)),
+                        TextSpan(
+                          text: " Flutter",
+                        ),
+
+                      ],
+                    ),
+                  ),
+
+                  Spacer(),
                 ],
               ),
             ),
@@ -177,8 +203,8 @@ class _SignUpViewState extends State<SignUpView> {
       maxLines: 1,
       textAlign: TextAlign.left,
       style: GoogleFonts.nunito(
-        fontWeight: FontWeight.w600,
-        fontSize: 30,
+        fontWeight: FontWeight.w700,
+        fontSize: 25,
         color: LightColor.titleTextColor,
       ),
     );
@@ -215,7 +241,6 @@ class _SignUpViewState extends State<SignUpView> {
     }
 
     if (authFormType != AuthFormType.reset
-        // && authFormType != AuthFormType.phone
         ) {
       textFields.add(
         TextFormField(
@@ -240,7 +265,7 @@ class _SignUpViewState extends State<SignUpView> {
       fillColor: Colors.white70,
       focusColor: Colors.white,
       enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey, width: 0.05  )),
+          borderSide: BorderSide(color: Colors.grey, width: 0.05)),
       contentPadding:
           const EdgeInsets.only(left: 14.0, bottom: 10.0, top: 10.0),
     );
@@ -249,27 +274,17 @@ class _SignUpViewState extends State<SignUpView> {
   List<Widget> buildButtons() {
     String _switchButtonText, _newFormState, _submitButtonText;
     bool _showForgotPassword = false;
-    // bool _showSignInAnon = false;
-    bool _showSocial = true;
 
     if (authFormType == AuthFormType.signIn) {
       _switchButtonText = "Create New Account";
       _newFormState = "signUp";
       _submitButtonText = "Sign In";
       _showForgotPassword = true;
-      // _showSignInAnon = true;
     } else if (authFormType == AuthFormType.reset) {
       _switchButtonText = "Return to Sign In";
       _newFormState = "signIn";
       _submitButtonText = "Submit";
-      _showSocial = false;
     }
-    // else if (authFormType == AuthFormType.phone) {
-    //   _switchButtonText = "Cancel";
-    //   _newFormState = "signIn";
-    //   _submitButtonText = "Continue";
-    //   _showSocial = false;
-    // }
     else {
       _switchButtonText = "Have an Account? Sign In";
       _newFormState = "signIn";
@@ -295,7 +310,6 @@ class _SignUpViewState extends State<SignUpView> {
         ),
       ),
       showForgotPassword(_showForgotPassword),
-      // showSignInAnon(_showSignInAnon),
       FlatButton(
         child: Text(
           _switchButtonText,
@@ -305,7 +319,6 @@ class _SignUpViewState extends State<SignUpView> {
           switchFormState(_newFormState);
         },
       ),
-      buildSocialIcons(_showSocial),
     ];
   }
 
@@ -321,22 +334,6 @@ class _SignUpViewState extends State<SignUpView> {
             authFormType = AuthFormType.reset;
           });
         },
-      ),
-      visible: visible,
-    );
-  }
-
-  Widget buildSocialIcons(bool visible) {
-    final _auth = AuthProvider.of(context)!.auth;
-    return Visibility(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          // Divider(
-          //   color: Colors.black87,
-          // ),
-          SizedBox(height: 10),
-        ],
       ),
       visible: visible,
     );

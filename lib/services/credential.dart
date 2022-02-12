@@ -12,7 +12,7 @@ String? get currentEmail => _firebaseAuth.currentUser!.email;
         final smtpServer = gmail(email, password);
 
         final message = Message()
-          ..from = Address(email, 'E-Wallet App')
+          ..from = Address(email, 'Z-Wallet App')
           ..recipients.add(receiveremail)
           ..subject = 'Payment Received!'
           ..text = "You have received RM${amount} from ${currentEmail}";

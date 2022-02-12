@@ -24,7 +24,7 @@ showAlertDialog(BuildContext context) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Logging out..."),
-    content: Text("Would you like to seriously logout?"),
+    content: Text("Are you sure?"),
     actions: [
       cancelButton,
       continueButton,

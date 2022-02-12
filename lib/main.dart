@@ -8,6 +8,12 @@ void main() async {
   // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
   // FirebaseAdMob.instance.initialize(appId: AdMobService().getAdMobAppId());
   runApp(MyApp());
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent,
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+  ));
 }
 // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
@@ -52,7 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => HomeController(),
           '/homepage': (BuildContext context) => HomePage(),
-          '/transfer': (BuildContext context) => MoneyTransferPage(),
+          // '/transfer': (BuildContext context) => MoneyTransferPage(),
           // '/qrpage': (BuildContext context) => QrPayment(),
           '/profilepage': (BuildContext context) => ProfilePage(),
           '/qr_scan': (BuildContext context) => QRScanPage(),

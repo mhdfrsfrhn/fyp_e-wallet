@@ -1,15 +1,15 @@
 import 'package:fyp3/imports.dart';
 
-class BalanceCard extends StatefulWidget {
-  const BalanceCard({Key? key}) : super(key: key);
+class ExpensesCard extends StatefulWidget {
+  const ExpensesCard({Key? key}) : super(key: key);
 
   @override
-  State<BalanceCard> createState() => _BalanceCardState();
+  State<ExpensesCard> createState() => _ExpensesCardState();
 }
 
-class _BalanceCardState extends State<BalanceCard> {
+class _ExpensesCardState extends State<ExpensesCard> {
   Stream<DocumentSnapshot> balanceData =
-      FirebaseFirestore.instance.collection('users').doc(uid).snapshots();
+  FirebaseFirestore.instance.collection('users').doc(uid).collection('expenses').doc(formattedDate).snapshots();
 
   static String? get uid => FirebaseAuth.instance.currentUser!.uid;
 
@@ -32,7 +32,7 @@ class _BalanceCardState extends State<BalanceCard> {
   }
 
   Widget balanceCardView(BuildContext context, snapshot) {
-    var balance = snapshot.data!.data()['money'].toString();
+    var expenses = snapshot.data!.data()['expenses'].toString();
     return Container(
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(40)),
@@ -48,7 +48,7 @@ class _BalanceCardState extends State<BalanceCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const Text(
-                    'Total Balance,',
+                    'Today Expenses,',
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -59,14 +59,14 @@ class _BalanceCardState extends State<BalanceCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'RM ',
+                        '- RM ',
                         style: TextStyle(
                             fontSize: 35,
                             fontWeight: FontWeight.w500,
                             color: LightColor.yellow.withAlpha(200)),
                       ),
                       Text(
-                        balance,
+                        expenses,
                         style: GoogleFonts.mulish(
                             textStyle: Theme.of(context).textTheme.headline4,
                             fontSize: 35,
