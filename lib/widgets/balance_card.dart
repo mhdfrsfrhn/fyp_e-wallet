@@ -11,8 +11,6 @@ class _BalanceCardState extends State<BalanceCard> {
   Stream<DocumentSnapshot> balanceData =
       FirebaseFirestore.instance.collection('users').doc(uid).snapshots();
 
-  static String? get uid => FirebaseAuth.instance.currentUser!.uid;
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(

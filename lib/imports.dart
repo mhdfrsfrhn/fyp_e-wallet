@@ -40,7 +40,9 @@ export 'theme/background.dart';
 
 export 'services/auth_service.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
 DateTime date = DateTime.now();
 String formattedDate = DateFormat('dd-MM-yyyy').format(date);
+String? get uid => FirebaseAuth.instance.currentUser!.uid;

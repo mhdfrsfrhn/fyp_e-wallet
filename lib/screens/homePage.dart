@@ -39,49 +39,53 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget homeView(context, snapshot) {
-    List<int> list = [1, 2, 3, 4, 5];
     final authData = snapshot.data;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            // padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 35),
-                Row(
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/profilepage');
-                      },
-                      child: const CircleAvatar(
-                        backgroundImage:
-                            NetworkImage("https://picsum.photos/200/300.jpg"),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/profilepage');
+                        },
+                        child: const CircleAvatar(
+                          backgroundImage:
+                              NetworkImage("https://picsum.photos/200/300.jpg"),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 15),
-                    _nameText(
-                        'Hello, ${authData.displayName ?? 'Welcome to Z-wallet'}'),
-                    const Expanded(
-                      child: SizedBox(),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showAlertDialog(context);
-                      },
-                      child: Icon(
-                        Icons.logout,
-                        color: Theme.of(context).iconTheme.color,
+                      const SizedBox(width: 15),
+                      _nameText(
+                          'Hello, ${authData.displayName ?? 'Welcome to Z-wallet'}'),
+                      const Expanded(
+                        child: SizedBox(),
                       ),
-                    ),
-                  ],
+                      GestureDetector(
+                        onTap: () {
+                          showAlertDialog(context);
+                        },
+                        child: Icon(
+                          Icons.logout,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 40,
                 ),
-                const TitleText(text: "Z-wallet"),
+                Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: const TitleText(text: "Z-wallet")),
                 const SizedBox(
                   height: 20,
                 ),
@@ -93,8 +97,10 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 20,
                 ),
-                const TitleText(
-                  text: "Operations",
+                Container(padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: const TitleText(
+                    text: "Operations",
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -103,34 +109,36 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 40,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const TitleText(
-                      text: "Recent Payment",
-                    ),
-                    GestureDetector(
-                        child: Text(
-                          'View all',
-                          style: GoogleFonts.mulish(
-                              decoration: TextDecoration.underline,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                              color: LightColor.navyBlue2),
-                        ),
-                        onTap: () {
-                          Navigator.pushNamed(context, '/txHistorypagetest');
-                        }),
-                  ],
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const TitleText(
+                        text: "Recent Payment",
+                      ),
+                      GestureDetector(
+                          child: Text(
+                            'View all',
+                            style: GoogleFonts.mulish(
+                                decoration: TextDecoration.underline,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                color: LightColor.navyBlue2),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/txHistorypagetest');
+                          }),
+                    ],
+                  ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height * 0.1,
-                    maxHeight: MediaQuery.of(context).size.height * 0.41,
+                    maxHeight: MediaQuery.of(context).size.height * 0.39,
                     maxWidth: MediaQuery.of(context).size.width,
                   ),
-
                   child: SendHistory_BuildItem(),
                 ),
                 // _transectionList(),
@@ -145,9 +153,9 @@ class _HomePageState extends State<HomePage> {
                     style: GoogleFonts.mulish(color: Colors.grey, fontSize: 13),
                     children: [
                       TextSpan(
-                        text: "@Z-wallet beta 1.0\n\n",
-                          style: GoogleFonts.mulish(color: Colors.grey, fontSize: 14)
-                      ),
+                          text: "@Z-wallet beta 1.0\n\n",
+                          style: GoogleFonts.mulish(
+                              color: Colors.grey, fontSize: 14)),
                       TextSpan(
                         text: "by ",
                       ),
@@ -216,32 +224,35 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _operationsWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        _icon(
-          icon: MaterialCommunityIcons.qrcode_scan,
-          text: "QR Pay",
-          onTap: () async {
-            bool isAuthenticated =
-                await Authentication.authenticateWithBiometrics();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _icon(
+            icon: MaterialCommunityIcons.qrcode_scan,
+            text: "QR Pay",
+            onTap: () async {
+              bool isAuthenticated =
+                  await Authentication.authenticateWithBiometrics();
 
-            if (isAuthenticated) {
-              Navigator.pushNamed(context, '/qr_scan');
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Error authenticating using Biometrics.')));
-            }
-          },
-        ),
-        _icon(
-          icon: FontAwesome5Solid.hand_holding_usd,
-          text: "Receive Payment",
-          onTap: () {
-            Navigator.pushNamed(context, '/qr_code_gen');
-          },
-        ),
-      ],
+              if (isAuthenticated) {
+                Navigator.pushNamed(context, '/qr_scan');
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Error authenticating using Biometrics.')));
+              }
+            },
+          ),
+          _icon(
+            icon: FontAwesome5Solid.hand_holding_usd,
+            text: "Receive Payment",
+            onTap: () {
+              Navigator.pushNamed(context, '/qr_code_gen');
+            },
+          ),
+        ],
+      ),
     );
   }
 

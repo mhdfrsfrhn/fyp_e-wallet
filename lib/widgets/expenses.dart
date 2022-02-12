@@ -11,8 +11,6 @@ class _ExpensesCardState extends State<ExpensesCard> {
   Stream<DocumentSnapshot> balanceData =
   FirebaseFirestore.instance.collection('users').doc(uid).collection('expenses').doc(formattedDate).snapshots();
 
-  static String? get uid => FirebaseAuth.instance.currentUser!.uid;
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -22,9 +20,19 @@ class _ExpensesCardState extends State<ExpensesCard> {
         if (snapshot.hasError) {
           return Text('Something went wrong');
         }
-
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Text("Loading");
+        }
+        else if (!snapshot.hasData){
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .collection('expenses')
+              .doc(formattedDate)
+              .set({
+            'expenses':0
+          });
+          print('created new expenses');
         }
         return balanceCardView(context, snapshot);
       },

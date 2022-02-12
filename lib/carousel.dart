@@ -11,9 +11,11 @@ class Carousel extends StatefulWidget {
 
 class _CarouselState extends State<Carousel> {
   List<Widget> children = [
+    SizedBox(width: 20),
     BalanceCard(),
-    SizedBox(width: 10,),
+    SizedBox(width: 20),
     ExpensesCard(),
+    SizedBox(width: 20),
     // ContainerCard(),
   ];
 
@@ -21,6 +23,7 @@ class _CarouselState extends State<Carousel> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
+        // padding: EdgeInsets.only(right: 10),
         height: 150,
         width: MediaQuery.of(context).size.width,
         child: ListView.builder(

@@ -61,7 +61,6 @@ class _SendHistory_BuildItemState extends State<SendHistory_BuildItem> {
           );
         } else {
           return Container(
-            // padding: EdgeInsets.all(8),
             child: Scrollbar(
               child: ListView.builder(
                 itemCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
