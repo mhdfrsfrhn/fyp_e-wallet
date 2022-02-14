@@ -1,4 +1,5 @@
 import 'imports.dart';
+import 'screens/manual transfer/manual_transfer.dart';
 
 
 void main() async {
@@ -62,6 +63,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           // '/qrpage': (BuildContext context) => QrPayment(),
           '/profilepage': (BuildContext context) => ProfilePage(),
           '/qr_scan': (BuildContext context) => QRScanPage(),
+          '/manual_transfer': (BuildContext context) => ManualTransfer(),
           '/qr_code_gen': (BuildContext context) => QRCodeGen(),
           '/txHistorypage': (BuildContext context) => TransactionHistory(),
           '/txHistorypagetest': (BuildContext context) => txhistory_test(),

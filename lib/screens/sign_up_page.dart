@@ -97,16 +97,15 @@ class _SignUpViewState extends State<SignUpView> {
               child: Column(
                 children: <Widget>[
                   showAlert(),
-                  SizedBox(height: 10),
-                  Spacer(),
+                  SizedBox(height: _height * 0.23),
                   Container(
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.symmetric(horizontal: 30),
                       child: buildHeaderText()),
-                  SizedBox(height: 10),
+                  SizedBox(height: _height * 0.05),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
+                        horizontal: 20, vertical: 5),
                     child: Form(
                       key: formKey,
                       child: Column(
@@ -140,8 +139,6 @@ class _SignUpViewState extends State<SignUpView> {
                       ],
                     ),
                   ),
-
-                  Spacer(),
                 ],
               ),
             ),
@@ -310,7 +307,7 @@ class _SignUpViewState extends State<SignUpView> {
         ),
       ),
       showForgotPassword(_showForgotPassword),
-      FlatButton(
+      TextButton(
         child: Text(
           _switchButtonText,
           style: TextStyle(color: Colors.black87),
@@ -324,7 +321,8 @@ class _SignUpViewState extends State<SignUpView> {
 
   Widget showForgotPassword(bool visible) {
     return Visibility(
-      child: FlatButton(
+      child: TextButton(
+
         child: Text(
           "Forgot Password?",
           style: TextStyle(color: Colors.black87),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp3/imports.dart';
 import 'package:fyp3/screens/transfer/transfer_process_qr.dart';
@@ -18,6 +19,8 @@ class _QRScanPageState extends State<QRScanPage> {
   QRViewController? controller;
 
   String? get currentEmail => _firebaseAuth.currentUser!.email;
+
+  bool emailValidate = false;
 
   @override
   void dispose() {
@@ -43,9 +46,25 @@ class _QRScanPageState extends State<QRScanPage> {
             children: <Widget>[
               buildQrView(context),
               Positioned(bottom: 30, child: buildControlButtons()),
+              Positioned(bottom: 120, child: buildAlternative()),
             ],
           ),
         ),
+      );
+
+  Widget buildAlternative() => RichText(
+        text: TextSpan(
+            style: GoogleFonts.mulish(color: Colors.white, fontSize: 13),
+            children: [
+              TextSpan(text: 'QR code not working? Type in manually '),
+              TextSpan(
+                text: 'here.',
+                style: TextStyle(color: Colors.blue),
+                recognizer: TapGestureRecognizer()
+                  ..onTap =
+                      () => Navigator.pushNamed(context, '/manual_transfer'),
+              ),
+            ]),
       );
 
   Widget buildControlButtons() => Container(
@@ -150,22 +169,71 @@ class _QRScanPageState extends State<QRScanPage> {
     setState(() => this.controller = controller);
 
     controller.scannedDataStream.listen(
-      (barcode) {
+      (barcode) async {
         final currentScan = DateTime.now();
-        // if (lastScan == null ||
-        //     currentScan.difference(lastScan!) > const Duration(seconds: 3)) {
-        //   lastScan = currentScan;
-        //   print(barcode.code);
+        var receiverEmail = barcode.code.toString();
+
+        // Future<bool> doesEmailExist(String receiverEmail) async {
+        //   final QuerySnapshot result = await FirebaseFirestore.instance
+        //       .collection('users')
+        //       .where('email', isEqualTo: receiverEmail)
+        //       .limit(1)
+        //       .get();
+        //   final List<DocumentSnapshot> documents = result.docs;
+        //   if (documents.length == 1) {
+        //     print('email exist');
+        //     return true;
+        //   } else
+        //     print('email doesnt exist');
+        //     return false;
         // }
-        if (barcode.code.toString() != currentEmail) {
-          if (mounted) {
-            controller.dispose();
-            var route = new MaterialPageRoute(
-                builder: (BuildContext context) => new TransferProcessQR(
-                        value: PassdataQR(
-                      email: barcode.code.toString(),
-                    )));
-            Navigator.of(context).push(route);
+        await FirebaseFirestore.instance
+            .collection('users')
+            .where('email', isEqualTo: receiverEmail)
+            .limit(1)
+            .get()
+            .then((value) {
+          if (value.docs.isNotEmpty) {
+              emailValidate = true;
+            // emailValidate = true;
+          }else
+            emailValidate = false;
+        });
+
+        //     .then((DocumentSnapshot documentSnapshot) {
+        //   if (documentSnapshot.exists) {
+        //     var data = documentSnapshot;
+        //     if (data.get('email') == receiverEmail) {
+        //       print('debug');
+        //       emailValidate = true;
+        //     }
+        //   } else {
+        //     emailValidate = false;
+        //     print('debug else');
+        //   }
+        // });
+
+        if (receiverEmail != currentEmail) {
+          if (emailValidate == true) {
+            if (mounted) {
+              controller.dispose();
+              var route = new MaterialPageRoute(
+                  builder: (BuildContext context) => new TransferProcessQR(
+                          value: PassdataQR(
+                        email: barcode.code.toString(),
+                      )));
+              Navigator.of(context).push(route);
+            }
+          } else {
+            if (lastScan == null ||
+                currentScan.difference(lastScan!) >
+                    const Duration(seconds: 3)) {
+              lastScan = currentScan;
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  duration: const Duration(seconds: 2),
+                  content: Text(
+                      "This user '${receiverEmail}' doesn't exist. Please try another QR.")));
+            }
           }
         } else {
           if (lastScan == null ||

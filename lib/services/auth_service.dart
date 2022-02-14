@@ -1,7 +1,4 @@
 import 'package:fyp3/imports.dart';
-import 'package:intl/intl.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
 
 class Authentication {
   static Future<bool> authenticateWithBiometrics() async {
@@ -11,12 +8,19 @@ class Authentication {
 
     bool isAuthenticated = false;
 
+    if (isBiometricSupported) {
+      print('device supported');
+    }else print('device not supoorted');
     if (isBiometricSupported && canCheckBiometrics) {
       isAuthenticated = await localAuthentication.authenticate(
         localizedReason: 'Please complete the biometrics to proceed.',
         biometricOnly: true,
       );
+      print('test');
     }
+    if (canCheckBiometrics) {
+      print('can check biometric');
+    } else print ('cannot check biometric');
 
     return isAuthenticated;
   }
@@ -26,9 +30,8 @@ class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Stream<String> get onAuthStateChanged =>
-      _firebaseAuth.authStateChanges().map(
-            (User? user) => user!.uid,
+  Stream<String> get onAuthStateChanged => _firebaseAuth.authStateChanges().map(
+        (User? user) => user!.uid,
       );
 
   // GET UID
@@ -56,9 +59,8 @@ class AuthService {
   }
 
   // Email & Password Sign Up
-  Future<String> createUserWithEmailAndPassword(String email, String password,
-      String name) async {
-
+  Future<String> createUserWithEmailAndPassword(
+      String email, String password, String name) async {
     final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -76,14 +78,12 @@ class AuthService {
     });
 
     ///Create today expenses doc
-    FirebaseFirestore.instance
+    _db
         .collection('users')
         .doc(authResult.user!.uid)
-        .collection('expenses')
+        .collection('Daily Expenses')
         .doc(formattedDate)
-        .set({
-      'expenses':0
-    });
+        .set({'expenses': 0});
 
     // Update the username
     await updateUserName(name, authResult.user!);
@@ -96,10 +96,10 @@ class AuthService {
   }
 
   // Email & Password Sign In
-  Future<String?> signInWithEmailAndPassword(String email,
-      String password) async {
+  Future<String?> signInWithEmailAndPassword(
+      String email, String password) async {
     return (await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password))
+            email: email, password: password))
         .user!
         .uid;
   }
@@ -114,18 +114,17 @@ class AuthService {
     return _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
-
   // Create Anonymous User
   Future singInAnonymously() {
     return _firebaseAuth.signInAnonymously();
   }
 
-  Future convertUserWithEmail(String email, String password,
-      String name) async {
+  Future convertUserWithEmail(
+      String email, String password, String name) async {
     final currentUser = _firebaseAuth.currentUser;
 
     final credential =
-    EmailAuthProvider.credential(email: email, password: password);
+        EmailAuthProvider.credential(email: email, password: password);
     await currentUser!.linkWithCredential(credential);
     await updateUserName(name, currentUser);
   }

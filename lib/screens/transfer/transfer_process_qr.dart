@@ -5,7 +5,7 @@ import 'package:fyp3/services/fingerauth.dart';
 import 'package:fyp3/utils/utils.dart';
 import 'package:fyp3/widgets/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:local_auth/auth_strings.dart';
+// import 'package:local_auth/auth_strings.dart';
 import 'package:uuid/uuid.dart';
 
 class PassreceiptQR {
@@ -36,26 +36,26 @@ class TransferProcessQR extends StatefulWidget {
 }
 
 class _TransferProcessQRState extends State<TransferProcessQR> {
-  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+  // GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   final auth = FirebaseAuth.instance;
   final user = FirebaseAuth.instance.currentUser!;
   final db = FirebaseFirestore.instance;
   var transferAccountId = "";
   var data;
-  LocalAuthentication _fingerauth = LocalAuthentication();
+  // LocalAuthentication _fingerauth = LocalAuthentication();
   TextEditingController _amount = TextEditingController();
   TextEditingController _reference = TextEditingController();
   var fingerAuthentication = FingerAuth();
-  bool _checkBio = false;
-  bool _isBioFinger = false;
-  bool _isLoading = false;
+  // bool _checkBio = false;
+  // bool _isBioFinger = false;
+  // bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _checkBiometrics();
-    _listBioAndFindFingerType();
+    // _checkBiometrics();
+    // _listBioAndFindFingerType();
   }
 
   @override
@@ -173,7 +173,7 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
                       var currentAccExpenses = db
                           .collection('users')
                           .doc(user.uid)
-                          .collection('expenses')
+                          .collection('Daily Expenses')
                           .doc(formattedDate);
                       batch.update(currentAccExpenses, {
                         'expenses': FieldValue.increment(
@@ -183,9 +183,9 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
                       ///sending email
                       sendEmail(context, _amount.text, widget.value.email);
 
-                      CollectionReference transactionHistoryRef =
-                          FirebaseFirestore.instance
-                              .collection('transactionHistory');
+                      // CollectionReference transactionHistoryRef =
+                      //     FirebaseFirestore.instance
+                      //         .collection('transactionHistory');
                       var uuid = Uuid();
                       var transactionId = uuid.v1().toString();
                       var transactionHistory = db
@@ -302,57 +302,33 @@ class _TransferProcessQRState extends State<TransferProcessQR> {
   }
 
   // Biometrics
-  void _checkBiometrics() async {
-    try {
-      final bio = await _fingerauth.canCheckBiometrics;
-      setState(() {
-        _checkBio = bio;
-      });
-      print('Biometrics = ${_checkBio}');
-    } catch (e) {}
-  }
+  // void _checkBiometrics() async {
+  //   try {
+  //     final bio = await _fingerauth.canCheckBiometrics;
+  //     setState(() {
+  //       _checkBio = bio;
+  //     });
+  //     print('Biometrics = ${_checkBio}');
+  //   } catch (e) {}
+  // }
 
-  void _listBioAndFindFingerType() async {
-    List<BiometricType>? _listType;
-    try {
-      _listType = await _fingerauth.getAvailableBiometrics();
-    } on PlatformException catch (e) {
-      print(e.message);
-    }
-
-    print('List Biometrics = $_listType');
-
-    if (_listType!.contains(BiometricType.fingerprint)) {
-      setState(() {
-        _isBioFinger = true;
-      });
-      print('Fingerprint is $_isBioFinger');
-    }
-  }
-
-  Future<String?> _startFingerAuth() async {
-    bool _isAuthenticated = false;
-    AndroidAuthMessages _androidMsg = AndroidAuthMessages(
-      signInTitle: 'Biometric authentication',
-      biometricHint: '',
-      cancelButton: 'Close',
-    );
-    try {
-      _isAuthenticated = await _fingerauth.authenticate(
-        localizedReason: 'Please scan your biometric or use PIN to continue',
-        useErrorDialogs: true,
-        stickyAuth: true,
-        androidAuthStrings: _androidMsg,
-      );
-    } on PlatformException catch (e) {
-      print(e.message);
-    }
-
-    if (_isAuthenticated) {
-      return "Authenticated";
-    }
-    return "Failed";
-  }
+  // void _listBioAndFindFingerType() async {
+  //   List<BiometricType>? _listType;
+  //   try {
+  //     _listType = await _fingerauth.getAvailableBiometrics();
+  //   } on PlatformException catch (e) {
+  //     print(e.message);
+  //   }
+  //
+  //   print('List Biometrics = $_listType');
+  //
+  //   if (_listType!.contains(BiometricType.fingerprint)) {
+  //     setState(() {
+  //       _isBioFinger = true;
+  //     });
+  //     print('Fingerprint is $_isBioFinger');
+  //   }
+  // }
 
   Widget _textDividerTransfer() {
     return Container(

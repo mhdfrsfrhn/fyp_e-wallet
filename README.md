@@ -1,6 +1,6 @@
 # E-Wallet
 
-build apk command: flutter build apk --obfuscate --split-debug-info=./fyp3/debug
+build apk command: flutter build apk --no-sound-null-safety --obfuscate --split-debug-info=./fyp3/debug
 flutter build apk --no-sound-null-safety --target-platform android-arm,android-arm64,android-x64 --split-per-abi --obfuscate --split-debug-info=./fyp3/debug
 
 

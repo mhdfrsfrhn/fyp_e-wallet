@@ -107,7 +107,7 @@ class _QRCodeGenState extends State<QRCodeGen> {
                         ),
                         onPressed: () {},
                         child: Container(
-                          height: MediaQuery.of(context).size.height * 0.4,
+                          height: MediaQuery.of(context).size.height * 0.43,
                           width: MediaQuery.of(context).size.width,
                           child: RepaintBoundary(
                             // key: globalKey,
@@ -118,6 +118,14 @@ class _QRCodeGenState extends State<QRCodeGen> {
                                 QrImage(
                                     data: '${authData.email ?? '??'}',
                                     size: bodyHeight * 0.35),
+                                AutoSizeText(
+                                  '${authData.email ?? '??'}',
+                                  maxLines: 1,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: LightColor.titleTextColor),
+                                ),
+                                SizedBox(height: 10),
                                 AutoSizeText(
                                   'Show your QR code to payer to receive money',
                                   maxLines: 1,

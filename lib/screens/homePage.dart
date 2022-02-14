@@ -159,19 +159,12 @@ class _HomePageState extends State<HomePage> {
                       TextSpan(
                         text: "by ",
                       ),
-                      WidgetSpan(
-                          child: Icon(FontAwesome5Brands.facebook_square,
-                              size: 14, color: LightColor.lightBlue2)),
                       TextSpan(
-                        text: "arrriso & ",
+                        text: "farrriso & ",
                       ),
-                      WidgetSpan(
-                          child: Icon(
-                        FontAwesome5Brands.app_store_ios,
-                        size: 14,
-                      )),
+
                       TextSpan(
-                        text: "hmaddnazrii",
+                        text: "ahmaddnazrii",
                       ),
                     ],
                   ),
@@ -229,6 +222,13 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
+          // _icon(
+          //   icon: Icons.transfer_within_a_station,
+          //   text: "Transfer ",
+          //   onTap: () {
+          //     Navigator.pushNamed(context, '/manual_transfer');
+          //   },
+          // ),
           _icon(
             icon: MaterialCommunityIcons.qrcode_scan,
             text: "QR Pay",
@@ -280,7 +280,8 @@ class _HomePageState extends State<HomePage> {
             child: Icon(icon),
           ),
         ),
-        Text(text!,
+        AutoSizeText(text!,
+            maxLines: 2,
             style: GoogleFonts.mulish(
                 textStyle: Theme.of(context).textTheme.headline4,
                 fontSize: 15,

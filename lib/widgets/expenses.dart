@@ -8,8 +8,12 @@ class ExpensesCard extends StatefulWidget {
 }
 
 class _ExpensesCardState extends State<ExpensesCard> {
-  Stream<DocumentSnapshot> balanceData =
-  FirebaseFirestore.instance.collection('users').doc(uid).collection('expenses').doc(formattedDate).snapshots();
+  Stream<DocumentSnapshot> balanceData = FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .collection('Daily Expenses')
+      .doc(formattedDate)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +27,16 @@ class _ExpensesCardState extends State<ExpensesCard> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Text("Loading");
         }
-        else if (!snapshot.hasData){
+        if (snapshot.data!.exists == false) {
           FirebaseFirestore.instance
               .collection('users')
               .doc(uid)
-              .collection('expenses')
+              .collection('Daily Expenses')
               .doc(formattedDate)
               .set({
             'expenses':0
           });
-          print('created new expenses');
+          print('new daily expenses created');
         }
         return balanceCardView(context, snapshot);
       },
@@ -40,7 +44,10 @@ class _ExpensesCardState extends State<ExpensesCard> {
   }
 
   Widget balanceCardView(BuildContext context, snapshot) {
-    var expenses = snapshot.data!.data()['expenses'].toString();
+
+    // print(formattedDate);
+    var expenses = snapshot.data!['expenses'].toString();
+
     return Container(
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(40)),
